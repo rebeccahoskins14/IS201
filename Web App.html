@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Idea Spinner</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #f8c8c8, #f5e1da);
+            color: #3e3e3e;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-top: 20px;
+            color: #c96d9c;
+        }
+
+        #ingredient-selector-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        #ingredient-selector {
+            padding: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #f5c7c7;
+            border: none;
+            transition: 0.3s;
+        }
+
+        #ingredient-selector:hover {
+            background-color: #f6a0a0;
+        }
+
+        #random-ingredient-button {
+            padding: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #f5c7c7;
+            border: none;
+            transition: 0.3s;
+        }
+
+        #random-ingredient-button:hover {
+            background-color: #f6a0a0;
+        }
+
+        #spinner {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            width: 300px;
+            margin: 20px auto;
+            color: #8a4f7d;
+        }
+
+        #meal {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #c96d9c;
+            margin-top: 30px;
+        }
+
+        #meal-description {
+            font-size: 1.2rem;
+            color: #777;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+
+        #spin-button {
+            background-color: #c96d9c;
+            color: white;
+            font-size: 1.5rem;
+            border: none;
+            padding: 10px 30px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        #spin-button:hover {
+            background-color: #a15b82;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Meal Idea Spinner</h1>
+
+    <div id="ingredient-selector-container">
+        <select id="ingredient-selector">
+            <option value="chicken">Chicken</option>
+            <option value="beef">Beef</option>
+            <option value="fish">Fish</option>
+            <option value="egg">Egg</option>
+            <option value="rice">Rice</option>
+            <option value="pasta">Pasta</option>
+            <option value="cheese">Cheese</option>
+            <option value="vegetables">Vegetables</option>
+            <option value="beans">Beans</option>
+            <option value="lamb">Lamb</option> <!-- Replaced tofu with lamb -->
+        </select>
+
+        <button id="random-ingredient-button">Pick a Random Ingredient</button>
+    </div>
+
+    <button id="spin-button">Spin!</button>
+
+    <div id="spinner">Spin the wheel to get a meal idea!</div>
+
+    <div id="meal"></div>
+    <div id="meal-description"></div>
+
+    <script>
+        const meals = {
+            chicken: [
+                {
+                    name: "Chicken Stir Fry",
+                    description: "A quick stir fry with colorful vegetables and tender chicken pieces."
+                },
+                {
+                    name: "Grilled Chicken Salad",
+                    description: "Grilled chicken on a bed of mixed greens with a tangy vinaigrette."
+                },
+                {
+                    name: "Chicken Tacos",
+                    description: "Taco shells filled with seasoned chicken, topped with salsa, cheese, and avocado."
+                },
+                {
+                    name: "Chicken Alfredo",
+                    description: "Creamy Alfredo sauce poured over tender chicken and fettuccine pasta."
+                },
+                {
+                    name: "Baked Chicken Parmesan",
+                    description: "Breaded chicken topped with marinara sauce and melted mozzarella cheese."
+                },
+                {
+                    name: "Chicken Curry",
+                    description: "A fragrant, spiced curry with tender chicken and a rich coconut milk base."
+                },
+                {
+                    name: "Chicken Fajitas",
+                    description: "Sizzling chicken, peppers, and onions wrapped in a soft flour tortilla."
+                }
+            ],
+            beef: [
+                {
+                    name: "Beef Stew",
+                    description: "Hearty beef stew with tender vegetables and a savory broth."
+                },
+                {
+                    name: "Beef Tacos",
+                    description: "Seasoned ground beef in taco shells, topped with cheese, lettuce, and salsa."
+                },
+                {
+                    name: "Grilled Steak",
+                    description: "A juicy, perfectly grilled steak served with your favorite sides."
+                },
+                {
+                    name: "Beef Stir Fry",
+                    description: "Quick stir fry with tender beef and colorful vegetables."
+                },
+                {
+                    name: "Beef Burger",
+                    description: "Classic beef burger with cheese, lettuce, and tomato."
+                },
+                {
+                    name: "Beef Wellington",
+                    description: "Tender beef wrapped in puff pastry with a rich mushroom filling."
+                },
+                {
+                    name: "Beef Burritos",
+                    description: "Flour tortillas stuffed with seasoned beef, cheese, and beans."
+                }
+            ],
+            fish: [
+                {
+                    name: "Fish Tacos",
+                    description: "Soft tortillas filled with seasoned grilled fish, topped with fresh veggies."
+                },
+                {
+                    name: "Grilled Salmon",
+                    description: "Salmon fillets grilled to perfection with a tangy lemon glaze."
+                },
+                {
+                    name: "Fish & Chips",
+                    description: "Crispy battered fish served with crispy French fries."
+                },
+                {
+                    name: "Fish Curry",
+                    description: "A spicy fish curry made with a rich coconut milk base."
+                },
+                {
+                    name: "Baked Cod",
+                    description: "Baked cod fish fillets with a lemon and herb seasoning."
+                },
+                {
+                    name: "Tuna Salad",
+                    description: "A fresh salad with chunks of tuna, olives, and mixed greens."
+                },
+                {
+                    name: "Fish Soup",
+                    description: "A comforting soup with fish fillets and vegetables in a flavorful broth."
+                }
+            ],
+            egg: [
+                {
+                    name: "Scrambled Eggs",
+                    description: "Fluffy scrambled eggs served with toast or veggies."
+                },
+                {
+                    name: "Egg Salad",
+                    description: "Creamy egg salad with mayo, mustard, and a hint of paprika."
+                },
+                {
+                    name: "Egg Tacos",
+                    description: "Soft tacos filled with scrambled eggs, cheese, and salsa."
+                },
+                {
+                    name: "Omelette",
+                    description: "Egg omelette with your choice of fillings like cheese, mushrooms, and spinach."
+                },
+                {
+                    name: "Shakshuka",
+                    description: "Poached eggs in a spicy tomato and pepper sauce."
+                },
+                {
+                    name: "Egg Fried Rice",
+                    description: "Stir-fried rice with scrambled eggs, peas, and soy sauce."
+                },
+                {
+                    name: "Deviled Eggs",
+                    description: "Hard-boiled eggs stuffed with a creamy mustard and mayo filling."
+                }
+            ],
+            rice: [
+                {
+                    name: "Fried Rice",
+                    description: "A delicious stir-fry of rice, vegetables, and eggs."
+                },
+                {
+                    name: "Paella",
+                    description: "Spanish rice dish with seafood, saffron, and vegetables."
+                },
+                {
+                    name: "Rice Pudding",
+                    description: "Sweet, creamy rice pudding flavored with vanilla and cinnamon."
+                },
+                {
+                    name: "Risotto",
+                    description: "A creamy rice dish with parmesan cheese and your choice of vegetables."
+                },
+                {
+                    name: "Chicken and Rice",
+                    description: "Tender chicken served with seasoned rice."
+                },
+                {
+                    name: "Sushi",
+                    description: "Japanese sushi rolls filled with rice, seafood, and veggies."
+                },
+                {
+                    name: "Rice & Beans",
+                    description: "Simple, nutritious rice served with seasoned black beans."
+                }
+            ],
+            pasta: [
+                {
+                    name: "Spaghetti Bolognese",
+                    description: "Spaghetti topped with a rich, savory tomato and beef sauce."
+                },
+                {
+                    name: "Penne Arrabbiata",
+                    description: "Penne pasta in a spicy tomato and garlic sauce."
+                },
+                {
+                    name: "Mac and Cheese",
+                    description: "Creamy pasta in a rich cheese sauce."
+                },
+                {
+                    name: "Pasta Primavera",
+                    description: "Pasta tossed with fresh, sautéed vegetables."
+                },
+                {
+                    name: "Lasagna",
+                    description: "Layered pasta with ground beef, ricotta cheese, and marinara sauce."
+                },
+                {
+                    name: "Fettuccine Alfredo",
+                    description: "Fettuccine pasta in a creamy parmesan sauce."
+                },
+                {
+                    name: "Pasta Salad",
+                    description: "Chilled pasta with veggies, olives, and a tangy dressing."
+                }
+            ],
+            cheese: [
+                {
+                    name: "Grilled Cheese Sandwich",
+                    description: "Classic grilled cheese sandwich with crispy golden bread and melted cheese."
+                },
+                {
+                    name: "Cheese Pizza",
+                    description: "A delicious pizza topped with gooey mozzarella cheese."
+                },
+                {
+                    name: "Mac and Cheese",
+                    description: "Pasta in a rich, cheesy sauce."
+                },
+                {
+                    name: "Cheese Fondue",
+                    description: "Melted cheese served with bread and veggies for dipping."
+                },
+                {
+                    name: "Cheese Quesadilla",
+                    description: "A crispy tortilla filled with melted cheese."
+                },
+                {
+                    name: "Cheese Omelette",
+                    description: "Fluffy omelette filled with melted cheese."
+                },
+                {
+                    name: "Cheese Ravioli",
+                    description: "Pasta filled with ricotta cheese and topped with marinara sauce."
+                }
+            ],
+            vegetables: [
+                {
+                    name: "Roasted Vegetables",
+                    description: "Assorted vegetables roasted with olive oil, garlic, and herbs."
+                },
+                {
+                    name: "Vegetable Stir Fry",
+                    description: "A medley of colorful vegetables sautéed in a savory sauce."
+                },
+                {
+                    name: "Vegetable Soup",
+                    description: "A hearty soup made with fresh vegetables and vegetable broth."
+                },
+                {
+                    name: "Grilled Vegetables",
+                    description: "Grilled zucchini, peppers, and eggplant drizzled with olive oil."
+                },
+                {
+                    name: "Veggie Tacos",
+                    description: "Soft tortillas filled with seasoned vegetables and fresh toppings."
+                },
+                {
+                    name: "Vegetable Curry",
+                    description: "A flavorful curry made with a variety of vegetables and spices."
+                },
+                {
+                    name: "Veggie Burger",
+                    description: "A plant-based patty made with vegetables, beans, and grains."
+                }
+            ],
+            beans: [
+                {
+                    name: "Chili",
+                    description: "A spicy stew with beans, ground beef, and tomatoes."
+                },
+                {
+                    name: "Black Bean Tacos",
+                    description: "Taco shells filled with seasoned black beans and fresh toppings."
+                },
+                {
+                    name: "Bean Soup",
+                    description: "A comforting soup made with beans, vegetables, and broth."
+                },
+                {
+                    name: "Hummus",
+                    description: "A creamy dip made from blended chickpeas, tahini, and olive oil."
+                },
+                {
+                    name: "Bean Burritos",
+                    description: "Flour tortillas stuffed with seasoned beans, rice, and cheese."
+                },
+                {
+                    name: "Falafel",
+                    description: "Fried chickpea balls served with pita and tahini sauce."
+                },
+                {
+                    name: "Bean Salad",
+                    description: "A fresh salad with mixed beans, veggies, and a tangy vinaigrette."
+                }
+            ],
+            lamb: [
+                {
+                    name: "Lamb Curry",
+                    description: "Tender lamb in a rich, spiced curry sauce."
+                },
+                {
+                    name: "Lamb Kebabs",
+                    description: "Grilled skewers of marinated lamb served with vegetables."
+                },
+                {
+                    name: "Lamb Stew",
+                    description: "Slow-cooked lamb with root vegetables and savory broth."
+                },
+                {
+                    name: "Lamb Chops",
+                    description: "Grilled lamb chops seasoned with rosemary and garlic."
+                },
+                {
+                    name: "Lamb Shawarma",
+                    description: "Spiced lamb served in pita bread with fresh veggies and sauce."
+                },
+                {
+                    name: "Lamb Tagine",
+                    description: "A slow-cooked Moroccan stew with lamb, vegetables, and spices."
+                },
+                {
+                    name: "Lamb Biryani",
+                    description: "A fragrant rice dish with marinated lamb and aromatic spices."
+                }
+            ]
+        };
+
+        const spinButton = document.getElementById("spin-button");
+        const randomIngredientButton = document.getElementById("random-ingredient-button");
+        const mealElement = document.getElementById("meal");
+        const mealDescriptionElement = document.getElementById("meal-description");
+        const spinnerElement = document.getElementById("spinner");
+
+        function getRandomIngredient() {
+            const ingredients = Object.keys(meals);
+            const randomIngredient = ingredients[Math.floor(Math.random() * ingredients.length)];
+            document.getElementById("ingredient-selector").value = randomIngredient;
+        }
+
+        function spinWheel() {
+            spinnerElement.textContent = "Spinning...";
+            const selectedIngredient = document.getElementById("ingredient-selector").value;
+            const mealList = meals[selectedIngredient];
+            let currentIndex = 0;
+
+            const interval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % mealList.length;
+                mealElement.textContent = mealList[currentIndex].name;
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                const randomMeal = mealList[Math.floor(Math.random() * mealList.length)];
+                mealElement.textContent = randomMeal.name;
+                mealDescriptionElement.innerHTML = randomMeal.description;
+                spinnerElement.textContent = "Here's your meal idea!";
+            }, 2000); // Spins for 2 seconds before stopping
+        }
+
+        spinButton.addEventListener("click", spinWheel);
+        randomIngredientButton.addEventListener("click", getRandomIngredient);
+    </script>
+</body>
+
+</html>
